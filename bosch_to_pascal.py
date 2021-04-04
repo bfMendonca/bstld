@@ -24,6 +24,7 @@ def write_xml(savedir, image, imgWidth, imgHeight,
     annotation = ET.Element("annotation")
     ET.SubElement(annotation, 'folder').text = str(currentfolder)
     ET.SubElement(annotation, 'filename').text = str(imagename)
+    ET.SubElement(annotation, 'path').text = str(os.path.dirname(impath))
     imagename = imagename.split('.')[0]
     size = ET.SubElement(annotation, 'size')
     ET.SubElement(size, 'width').text = str(imgWidth)

@@ -74,7 +74,7 @@ def create_object_detection_tfrecords(labels, tfrecords_path, dataset_folder, se
     """
 
     shuffle(labels)
-    writer = tf.python_io.TFRecordWriter(tfrecords_path)
+    writer = tf.io.TFRecordWriter(tfrecords_path)
     for label in tqdm.tqdm(labels, desc='Creating {}-set'.format(set_name)):
         image_path = os.path.join(dataset_folder, label['path'])
         image = cv2.imread(image_path)
@@ -112,10 +112,8 @@ def create_object_detection_tfrecords(labels, tfrecords_path, dataset_folder, se
             'image/object/bbox/xmax': dataset_util.float_list_feature(xmax),
             'image/object/bbox/ymin': dataset_util.float_list_feature(ymin),
             'image/object/bbox/ymax': dataset_util.float_list_feature(ymax),
-            'image/object/class/text': dataset_util.bytes_list_feature(
-                list(map(modified_label_string, classes))),
-            'image/object/class/label': dataset_util.int64_list_feature(
-                list(map(label_id, classes))),
+            'image/object/class/text': dataset_util.bytes_list_feature( list(map(modified_label_string, classes))),
+            'image/object/class/label': dataset_util.int64_list_feature(list(map(label_id, classes))),
         }))
         writer.write(complete_example.SerializeToString())
 
